@@ -1,0 +1,329 @@
+# Compute four values, in the following order, from
+# the grouped data:
+#
+# 1. count = n()
+# 2. unique = n_distinct(ip_id)
+# 3. countries = n_distinct(country)
+# 4. avg_bytes = mean(size)
+#
+# A few thing to be careful of:
+#
+# 1. Separate arguments by commas
+# 2. Make sure you have a closing parenthesis
+# 3. Check your spelling!
+# 4. Store the result in pack_sum (for 'package summary')
+#
+# You should also take a look at ?n and ?n_distinct, so
+# that you really understand what is going on.
+
+pack_sum <- summarize(by_package,
+                      count = n (),
+                      unique = n_distinct (ip_id),
+                      countries = n_distinct (country),
+                      avg_bytes = mean (size))
+                      
+package	count	unique	countries	avg_bytes
+1	ggplot2	4602	1680	81	2427716.054
+2	Rcpp	3195	2044	84	2512100.355
+3	plyr	2908	1754	81	799122.790
+4	rJava	2773	963	70	633522.348
+5	DBI	2599	492	48	206933.250
+6	LPCM	2335	17	10	526814.226
+7	stringr	2267	1948	82	65277.166
+8	digest	2210	1894	83	120549.294
+9	reshape2	2032	1652	76	330128.263
+10	foreach	1984	485	53	358069.782
+11	RColorBrewer	1890	1584	79	22763.995
+12	iterators	1887	462	53	294757.526
+13	scales	1726	1408	77	126819.331
+14	colorspace	1683	1433	80	357411.197
+15	bitops	1549	1408	76	28715.046
+16	munsell	1514	1276	75	119432.542
+17	RCurl	1504	1207	73	1903505.324
+18	labeling	1502	1270	75	34739.487
+19	proto	1500	1281	76	469796.779
+20	dichromat	1486	1257	74	134731.938
+21	gtable	1466	1255	75	55137.990
+22	zoo	1245	1073	63	857691.878
+23	httr	1195	1015	68	293879.626
+24	SparseM	1167	454	60	674890.722
+25	mgcv	1122	1006	72	1674032.285
+26	quantreg	1098	388	54	1733616.958
+27	evaluate	1095	998	73	35139.161
+28	yaml	1062	982	72	161006.309
+29	knitr	1037	885	70	946708.266
+30	XML	1022	770	62	2927022.407
+31	car	1008	837	64	1229122.307
+32	Hmisc	954	812	69	1367675.911
+33	markdown	939	809	66	138671.633
+34	lme4	938	756	68	3921084.377
+35	Matrix	932	801	66	3220134.165
+36	latticeExtra	887	791	69	1909937.068
+37	mime	886	780	65	15268.103
+38	gtools	875	793	62	109778.034
+39	RMySQL	862	98	21	212832.918
+40	Formula	852	777	65	155742.002
+41	mvtnorm	841	729	64	203047.132
+42	MASS	834	698	66	981152.179
+43	swirl	820	698	66	95868.696
+44	testthat	818	755	64	188230.345
+45	formatR	815	709	65	43311.099
+46	caTools	812	699	64	176589.018
+47	RJDBC	809	107	28	18715.441
+48	snow	809	134	30	28989.546
+49	highr	807	709	64	27969.524
+50	xlsx	798	578	59	380129.548
+51	rgl	786	655	70	2543589.210
+52	devtools	769	560	55	212932.640
+53	htmltools	762	656	55	65717.295
+54	nloptr	756	682	63	754357.567
+55	RJSONIO	751	585	60	1208103.992
+56	xtable	751	611	54	376072.182
+57	doSNOW	740	75	24	8363.755
+58	shiny	713	455	50	1212965.833
+59	gplots	708	645	65	519971.459
+60	VIF	697	37	12	2344226.571
+61	data.table	680	564	59	1252721.215
+
+# Don't change any of the code below. Just type submit()
+# when you think you understand it.
+
+# We've already done this part, but we're repeating it
+# here for clarity.
+
+by_package <- group_by(cran, package)
+pack_sum <- summarize(by_package,
+                      count = n(),
+                      unique = n_distinct(ip_id),
+                      countries = n_distinct(country),
+                      avg_bytes = mean(size))
+
+# Here's the new bit, but using the same approach we've
+# been using this whole time.
+
+top_countries <- filter(pack_sum, countries > 60)
+result1 <- arrange(top_countries, desc(countries), avg_bytes)
+
+# Print the results to the console.
+print(result1)
+
+# Don't change any of the code below. Just type submit()
+# when you think you understand it. If you find it
+# confusing, you're absolutely right!
+
+result2 <-
+  arrange(
+    filter(
+      summarize(
+        group_by(cran,
+                 package
+        ),
+        count = n(),
+        unique = n_distinct(ip_id),
+        countries = n_distinct(country),
+        avg_bytes = mean(size)
+      ),
+      countries > 60
+    ),
+    desc(countries),
+    avg_bytes
+  )
+
+print(result2)
+
+# Read the code below, but don't change anything. As
+# you read it, you can pronounce the %>% operator as
+# the word 'then'.
+#
+# Type submit() when you think you understand
+# everything here.
+
+result3 <-
+  cran %>%
+  group_by(package) %>%
+  summarize(count = n(),
+            unique = n_distinct(ip_id),
+            countries = n_distinct(country),
+            avg_bytes = mean(size)
+  ) %>%
+  filter(countries > 60) %>%
+  arrange(desc(countries), avg_bytes)
+
+# Print result to console
+print(result3)
+
+package	count	unique	countries	avg_bytes
+1	Rcpp	3195	2044	84	2512100.35
+2	digest	2210	1894	83	120549.29
+3	stringr	2267	1948	82	65277.17
+4	plyr	2908	1754	81	799122.79
+5	ggplot2	4602	1680	81	2427716.05
+6	colorspace	1683	1433	80	357411.20
+7	RColorBrewer	1890	1584	79	22763.99
+8	scales	1726	1408	77	126819.33
+9	bitops	1549	1408	76	28715.05
+10	reshape2	2032	1652	76	330128.26
+11	proto	1500	1281	76	469796.78
+12	labeling	1502	1270	75	34739.49
+13	gtable	1466	1255	75	55137.99
+14	munsell	1514	1276	75	119432.54
+15	dichromat	1486	1257	74	134731.94
+16	evaluate	1095	998	73	35139.16
+17	RCurl	1504	1207	73	1903505.32
+18	yaml	1062	982	72	161006.31
+19	mgcv	1122	1006	72	1674032.29
+20	rJava	2773	963	70	633522.35
+21	knitr	1037	885	70	946708.27
+22	rgl	786	655	70	2543589.21
+23	Hmisc	954	812	69	1367675.91
+24	latticeExtra	887	791	69	1909937.07
+25	httr	1195	1015	68	293879.63
+26	lme4	938	756	68	3921084.38
+27	swirl	820	698	66	95868.70
+28	markdown	939	809	66	138671.63
+29	MASS	834	698	66	981152.18
+30	Matrix	932	801	66	3220134.17
+31	mime	886	780	65	15268.10
+32	formatR	815	709	65	43311.10
+33	Formula	852	777	65	155742.00
+34	gplots	708	645	65	519971.46
+35	highr	807	709	64	27969.52
+36	caTools	812	699	64	176589.02
+37	testthat	818	755	64	188230.34
+38	mvtnorm	841	729	64	203047.13
+39	car	1008	837	64	1229122.31
+40	nloptr	756	682	63	754357.57
+41	zoo	1245	1073	63	857691.88
+42	aplpack	416	382	63	3132834.19
+43	gtools	875	793	62	109778.03
+44	XML	1022	770	62	2927022.41
+45	e1071	562	482	61	743153.75
+46	RcppArmadillo	505	444	61	1340652.31
+
+# select() the following columns from cran. Keep in mind
+# that when you're using the chaining operator, you don't
+# need to specify the name of the data tbl in your call to
+# select().
+#
+# 1. ip_id
+# 2. country
+# 3. package
+# 4. size
+#
+# The call to print() at the end of the chain is optional,
+# but necessary if you want your results printed to the
+# console. Note that since there are no additional arguments
+# to print(), you can leave off the parentheses after
+# the function name. This is a convenient feature of the %>%
+# operator.
+
+cran %>%
+  select(ip_id, country, package, size) %>%
+	print
+
+# Use mutate() to add a column called size_mb that contains
+# the size of each download in megabytes (i.e. size / 2^20).
+#
+# If you want your results printed to the console, add
+# print to the end of your chain.
+
+cran %>%
+  select(ip_id, country, package, size) %>%
+  mutate(size_mb= size / 2^20)
+
+# Use filter() to select all rows for which size_mb is
+# less than or equal to (<=) 0.5.
+#
+# If you want your results printed to the console, add
+# print to the end of your chain.
+
+cran %>%
+  select(ip_id, country, package, size) %>%
+  mutate(size_mb = size / 2^20) %>%
+  filter (size_mb <= 0.5 )# Your call to filter() goes here
+  
+  # arrange() the result by size_mb, in descending order.
+#
+# If you want your results printed to the console, add
+# print to the end of your chain.
+
+cran %>%
+  select(ip_id, country, package, size) %>%
+  mutate(size_mb = size / 2^20) %>%
+  filter(size_mb <= 0.5) %>%
+  arrange (desc(size_mb))# Your call to arrange() goes here
+  
+  # Repeat your calls to gather() and separate(), but this time
+# use the %>% operator to chain the commands together without
+# storing an intermediate result.
+#
+# If this is your first time seeing the %>% operator, check
+# out ?chain, which will bring up the relevant documentation.
+# You can also look at the Examples section at the bottom
+# of ?gather and ?separate.
+#
+# The main idea is that the result to the left of %>%
+# takes the place of the first argument of the function to
+# the right. Therefore, you OMIT THE FIRST ARGUMENT to each
+# function.
+#
+students2 %>%
+  gather(sex_class, count, -grade ) %>%
+  separate( sex_class, c("sex", "class")) %>%
+  print
+  
+  # Call gather() to gather the columns class1 through
+# through class5 into a new variable called class.
+# The 'key' should be class, and the 'value'
+# should be grade.
+#
+# tidyr makes it easy to reference multiple adjacent
+# columns with class1:class5, just like with sequences
+# of numbers.
+#
+# Since each student is only enrolled in two of
+# the five possible classes, there are lots of missing
+# values (i.e. NAs). Use the argument na.rm = TRUE
+# to omit these values from the final result.
+#
+# Remember that when you're using the %>% operator,
+# the value to the left of it gets inserted as the
+# first argument to the function on the right.
+#
+# Consult ?gather and/or ?chain if you get stuck.
+#
+students3 %>%
+  gather(class, grade, class1:class5, na.rm = TRUE) %>%
+  print
+  
+  # This script builds on the previous one by appending
+# a call to spread(), which will allow us to turn the
+# values of the test column, midterm and final, into
+# column headers (i.e. variables).
+#
+# You only need to specify two arguments to spread().
+# Can you figure out what they are? (Hint: You don't
+# have to specify the data argument since we're using
+# the %>% operator.
+#
+students3 %>%
+  gather(class, grade, class1:class5, na.rm = TRUE) %>%
+  spread(test, grade ) %>%
+  print
+  
+  # We want the values in the class columns to be
+# 1, 2, ..., 5 and not class1, class2, ..., class5.
+#
+# Use the mutate() function from dplyr along with
+# extract_numeric(). Hint: You can "overwrite" a column
+# with mutate() by assigning a new value to the existing
+# column instead of creating a new column.
+#
+# Check out ?mutate and/or ?extract_numeric if you need
+# a refresher.
+#
+students3 %>%
+  gather(class, grade, class1:class5, na.rm = TRUE) %>%
+  spread(test, grade) %>%
+  mutate (class = extract_numeric (class))  %>%
+  print
