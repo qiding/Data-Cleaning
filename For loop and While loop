@@ -18,3 +18,14 @@ for (char in chars) {if (char == "r") {rcount= rcount +1}
 
 # Print out rcount
 rcount
+# Initialize i as 1 
+i <- 1
+
+# Code the while loop
+while (i <= 10) {
+  print(3* i)
+  if ( (i*3) %% 8 == 0 ) { break
+    
+  }
+  i <- i + 1
+}
